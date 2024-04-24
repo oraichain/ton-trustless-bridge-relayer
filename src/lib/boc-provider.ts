@@ -7,7 +7,7 @@ import TonRocks from './ton-rocks-js/index.js';
 import { ByteArray32 } from './ton-types/index.js';
 import _ from 'lodash';
 
-const __dirname = path.resolve(path.dirname(''));
+const dirname = path.resolve(path.dirname(''));
 
 export class FileProvider {
   public constructor(private strPath: string) {}
@@ -39,7 +39,7 @@ export class BocProvider extends FileProvider {
   }
 
   protected constructor() {
-    super(path.resolve(__dirname, '../data/testnet/blocks'));
+    super(path.resolve(dirname, '../data/testnet/blocks'));
   }
 
   public async getBlockByFileHash(boc: string | ByteArray32) {

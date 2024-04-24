@@ -1,34 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
-import { IBeacon, IExecution } from 'src/modules/eth-beacon/beacon/normalize-beacon/index.js';
+import {
+  IBeacon,
+  IExecution,
+} from 'src/modules/eth-beacon/beacon/normalize-beacon/index.js';
 
 @Injectable()
 export class EthBeaconService {
-  constructor(
-    private prisma: PrismaService
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   async createBeacon<T extends IBeacon, E extends IExecution>(
     beacon: T,
     execution: IExecution,
     executionBranch: string[],
-    isFinality: boolean = false
+    isFinality: boolean = false,
   ) {
     const exists = await this.prisma.beacon.findFirst({
       where: {
-        selfHash: beacon.selfHash
-      }
+        selfHash: beacon.selfHash,
+      },
     });
 
     if (exists) {
       if (isFinality) {
         const createdBeacon = await this.prisma.beacon.update({
           where: {
-            id: exists.id
+            id: exists.id,
           },
           data: {
-            isFinality: true
-          }
+            isFinality: true,
+          },
         });
 
         console.log('Finality flag updated');
@@ -38,16 +39,15 @@ export class EthBeaconService {
       return beacon;
     }
 
-
     const parent = await this.prisma.beacon.findFirst({
       where: {
-        selfHash: beacon.parentRoot
-      }
-    })
+        selfHash: beacon.parentRoot,
+      },
+    });
 
     const parentId: number = parent ? parent.id : undefined;
 
-    console.log('Parent:', parentId);
+    console.log('Parent:', parentId, parent);
     const connect = !!parentId
       ? {
           Parent: {
@@ -58,14 +58,12 @@ export class EthBeaconService {
         }
       : undefined;
 
-
-
     const createdBeacon = this.prisma.beacon.create({
       data: {
         ...beacon,
         isFinality,
         ...connect,
-      } as any
+      } as any,
     });
 
     const createdExecution = await this.prisma.execution.create({
@@ -77,12 +75,12 @@ export class EthBeaconService {
         executionBranch4: executionBranch[3],
         beacon: {
           connect: {
-            id: (await createdBeacon).id
-          }
-        }
-      }
-    })
-    return {beacon: createdBeacon, execution: createdExecution};
+            id: (await createdBeacon).id,
+          },
+        },
+      },
+    });
+    return { beacon: createdBeacon, execution: createdExecution };
   }
 
   async findBySelfHash(hash: string) {
@@ -90,8 +88,8 @@ export class EthBeaconService {
     const beacon = await this.prisma.beacon.findFirst({
       where: {
         // id: 198
-        selfHash: hash
-      }
+        selfHash: hash,
+      },
     });
 
     return beacon;
@@ -102,11 +100,11 @@ export class EthBeaconService {
       include: {
         Child: true,
         Parent: true,
-        execution: true
+        execution: true,
       },
       where: {
-        parentRoot: hash
-      }
+        parentRoot: hash,
+      },
     });
 
     return beacon;
@@ -116,9 +114,9 @@ export class EthBeaconService {
     const beacon = await this.prisma.beacon.findFirst({
       where: {
         Child: {
-          selfHash: hash
-        }
-      }
+          selfHash: hash,
+        },
+      },
     });
 
     return beacon;
@@ -127,8 +125,8 @@ export class EthBeaconService {
   async findExecution(beaconId: number) {
     const execution = await this.prisma.execution.findFirst({
       where: {
-        beaconId
-      }
+        beaconId,
+      },
     });
 
     return execution;

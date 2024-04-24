@@ -1,3 +1,28 @@
 # TON Trustless bridge relayer
 
 by RSquad Blockchain Lab on behalf of TON Foundation
+
+# Address of Bridge on Sepolia:
+
+tocParser deployed to: 0x0c05F641F82928cf5624D53379F2bE36f4855959
+blockParser deployed to: 0x38e505a44D5c2e6C017aA5ece875bcd0Ed51eC25
+signatureValidator deployed to: 0xAA9A3f55058fE7C58CFDe1a37b7B8132B26a18C7
+shardValidator deployed to: 0x81A4d6F948cf2743E7274B903FE1bc7372242bE2
+validator deployed to: 0xc1B1DA34B2a6f32896d183C21973b31C60E2Be2F
+transactionParser deployed to: 0x9ef4f781756cC5E1eF84c585A007373648Ac1497
+token deployed to: 0x18220F763ab0f8d4a217De5A2d756a0B8CEd53D2
+bridge deployed to: 0xDC6AbA2cF9436344982782Dc028b3885968Cc55b
+adapter deployed to: 0x15cE8187bAA9f8a7EaBc60967d24c8e6adCB0866
+
+# Address of Bridge on BNB Mainnet:
+
+tocParser deployed to: 0x12B97f2eAf0505F09237f89961f889402c459358
+blockParser deployed to: 0xffaB31e1418d149251A43Bcf5387227085555086
+signatureValidator deployed to: 0xf974415c91b8f006d1938A6D884EFD840939eBa9
+shardValidator deployed to: 0x61134c673492F01584F468cdc2fFC34F817A297c
+validator deployed to: 0x902A01dBa0Bce7D2E00046aF477D23bbB4782Bd8
+signatureValidator.transferOwnership(validator.address);
+transactionParser deployed to: 0xC1516acFB7763cb8913D864E55e26815C9F67F5b
+token deployed to: 0x06c74Bc76bc5176B5e1D6295dc2fc7fB2fA298D0
+bridge deployed to: 0x0b0cA8f3E5ca785938F4cFBD1C419BBa24bF521d
+adapter deployed to: 0xAbD7454eBca7cEc113B2de2e4ACfCD96136fCD17

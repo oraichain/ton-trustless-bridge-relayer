@@ -13,20 +13,19 @@ import { TonClient4 } from 'ton';
 import axios from 'axios';
 import { parseBlock } from '../../../../lib/utils/blockReader.js';
 import { TonBlock } from '@prisma/client';
+import { decimalToTwosComplementHex } from '../../../../utils/hex.js';
 import axiosRetry from 'axios-retry';
 
-// console.log(axiosRetry);
-// // @ts-ignore
-// axiosRetry(axios, {
-//   retries: 1, // number of retries
-//   retryDelay: (retryCount) => {
-//     console.log(`retry attempt: ${retryCount}`);
-//     return 2000;
-//   },
-//   retryCondition: () => {
-//     return true;
-//   },
-// });
+axiosRetry(axios, {
+  retries: 100, // number of retries
+  retryDelay: (retryCount) => {
+    console.log(`retry attempt: ${retryCount}`);
+    return 2000;
+  },
+  retryCondition: () => {
+    return true;
+  },
+});
 
 @Injectable()
 export class TonApiService {
@@ -70,11 +69,17 @@ export class TonApiService {
   }
 
   async getBlockBoc(id: BaseTonBlockInfo): Promise<LiteApiBlockResponse> {
+    const formatId = `(${id.workchain},${decimalToTwosComplementHex(
+      id.shard,
+    )},${id.seqno},${id.rootHash},${id.fileHash})`;
     return axios
-      .post<LiteApiBlockResponse>(this.liteApiUrl + 'lite_server_get_block', {
-        id: tonClientBlockRequestToLiteApiBlockRequest(id),
-      })
-      .then((res) => res.data);
+      .get<LiteApiBlockResponse>(
+        this.liteApiUrl + `liteserver/get_block/${formatId}`,
+      )
+      .then((res) => ({
+        ...res.data,
+        data: Buffer.from(res.data.data, 'hex').toString('base64'),
+      }));
   }
 
   async getPreviousKeyBlock(

@@ -130,7 +130,6 @@ async function prepareOptimistics(
     beacons.map((op) => beaconService.isBeaconVerified(op.selfHash)),
   );
   const bocs = beacons.map((optimistic, index) => {
-
     return verifyOptimisticBoc(
       transformBeaconToCell(optimistic),
       optimistic?.Child?.selfHash || '0x0',
@@ -140,7 +139,7 @@ async function prepareOptimistics(
   return {
     data: beacons,
     bocs,
-    isVerified: isVerified.map(v => v.isValid),
+    isVerified: isVerified.map((v) => v.isValid),
   };
 }
 

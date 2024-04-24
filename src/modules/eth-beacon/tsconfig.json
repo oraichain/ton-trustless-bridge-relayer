@@ -1,7 +1,7 @@
 {
-  "extends": "../../../tsconfig.json",
-  "compilerOptions": {
-    "module": "CommonJS",
-    "moduleResolution": "NodeNext"
-  }
+  "extends": "../../../tsconfig.json"
+  // "compilerOptions": {
+  //   "module": "CommonJS",
+  //   "moduleResolution": "NodeNext"
+  // }
 }
