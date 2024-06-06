@@ -11,19 +11,24 @@ import { HealthModule } from './modules/health/health.module.js';
 import { LoggerModule } from './modules/logger/logger.module.js';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { EthBeaconModule } from './modules/eth-beacon/eth-beacon.module.js';
+import { CwProviderModule } from './modules/cw-provider/cw-provider.module.js';
+import { config } from './modules/config/config.js';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      load: [config],
+    }),
     EventEmitterModule.forRoot(),
-    TonExplorerModule,
-    TonReaderModule,
-    EthProviderModule,
-    TonValidatorModule,
+    // TonExplorerModule,
+    // TonReaderModule,
+    // EthProviderModule,
+    // TonValidatorModule,
     PrismaModule,
     HealthModule,
-    LoggerModule,
-    EthBeaconModule,
+    // LoggerModule,
+    // EthBeaconModule,
+    CwProviderModule,
   ],
   controllers: [AppController],
   providers: [],
